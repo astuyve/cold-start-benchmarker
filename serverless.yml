@@ -1,0 +1,29 @@
+
+service: cold-start-benchmarker
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "tag:GetResources"
+          Resource: "*" # Resource scoping not supported
+        - Effect: "Allow"
+          Action:
+            - "lambda:InvokeFunction"
+            - "lambda:UpdateFunctionConfiguration"
+          Resource: '*'
+
+functions:
+  invoke:
+    handler: handler.invoke
+    events:
+      - httpApi:
+          method: POST
+          path: /invoke
+
+
