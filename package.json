@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "aws-embedded-metrics": "^4.1.0"
+  }
+}
