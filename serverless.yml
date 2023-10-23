@@ -5,25 +5,23 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs18.x
+  timeout: 100
   iam:
     role:
       statements:
         - Effect: "Allow"
           Action:
-            - "tag:GetResources"
-          Resource: "*" # Resource scoping not supported
-        - Effect: "Allow"
-          Action:
             - "lambda:InvokeFunction"
             - "lambda:UpdateFunctionConfiguration"
-          Resource: '*'
+          Resource: '*' # okay this should be stricter, maybe limit it to function names?
 
 functions:
   invoke:
     handler: handler.invoke
+    environment:
+      FUNCTION_NAMES: 'unloaded-0mb-node-dev-hello, unloaded-50mb-node-dev-hello, unloaded-100mb-node-dev-hello, unloaded-150mb-node-dev-hello, unloaded-200mb-node-dev-hello, unloaded-250mb-node-dev-hello, service-0mb-node-dev-hello, service-50mb-node-dev-hello, service-100mb-node-dev-hello, service-150mb-node-dev-hello, service-200mb-node-dev-hello, service-250mb-node-dev-hello, serverless-bun-app-dev-hello, service-0mb-node-container-dev-hello, service-50mb-node-container-dev-hello, service-100mb-node-container-dev-hello, service-150mb-node-container-dev-hello, service-200mb-node-container-dev-hello, service-250mb-node-container-dev-hello, service-5mb-node-dev-hello, service-10mb-node-dev-hello, service-15mb-node-dev-hello, service-5mb-node-container-dev-hello, service-10mb-node-container-dev-hello, service-15mb-node-container-dev-hello'
     events:
-      - httpApi:
-          method: POST
-          path: /invoke
+      - schedule: rate(1 minute)
+      
 
 
